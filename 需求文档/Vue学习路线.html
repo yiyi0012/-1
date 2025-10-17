@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue学习路线</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入 Vue 3 依赖 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4" style="visibility: hidden;">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域 -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    {{ heroDesc }}
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:calendar" class="mr-2"></iconify-icon>
+                        {{ cycle }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:code-braces" class="mr-2"></iconify-icon>
+                        {{ tech }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:target" class="mr-2"></iconify-icon>
+                        {{ difficulty }}
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习路线主体 -->
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <!-- 学习路线 -->
+                <div id="roadmap" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:map-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        Vue学习路线
+                    </h2>
+                    <div class="text-gray-600 leading-relaxed whitespace-pre-line">{{ roadmapContent }}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+            createApp({
+                data() {
+                    return {
+                        siteName: "智慧应用工作室",
+                        navLinks: [
+                            { href: "../初稿.html", label: "首页" },
+                            { href: "../前端第一期展示.html", label: "学习计划" },
+                            { href: "#roadmap", label: "学习路线" }
+                        ],
+                        heroTitle: "Vue学习路线",
+                        heroDesc: "系统掌握Vue框架的完整学习路径",
+                        cycle: "总周期：1-2个月",
+                        tech: "技术：Vue.js、Vue Router、Vuex",
+                        difficulty: "难度等级：中级",
+                        roadmapContent: `Vue学习路线：
+
+阶段 1：基础入门（2周）
+核心：理解Vue核心概念和基本语法
+1.了解Vue.js：渐进式框架、MVVM模式、响应式原理
+2.环境搭建：Vue CLI安装、项目初始化、开发工具配置
+3.模板语法：插值、指令（v-bind、v-if、v-for）、事件处理
+4.实例与生命周期：Vue实例创建、生命周期钩子函数
+5.练习：制作一个简单的待办事项应用
+
+阶段 2：组件化开发（2周）
+核心：掌握组件化开发思想
+1.组件基础：全局组件、局部组件、组件注册方式
+2.组件通信：父子组件通信（props/$emit）、provide/inject
+3.插槽（Slots）：默认插槽、具名插槽、作用域插槽
+4.动态组件：component标签、keep-alive缓存
+5.练习：开发一个多功能卡片组件库
+
+阶段 3：路由与状态管理（2周）
+核心：构建单页应用的核心功能
+1.Vue Router：路由配置、嵌套路由、编程式导航
+2.路由守卫：全局守卫、路由独享守卫、组件内守卫
+3.Vuex状态管理：State、Getters、Mutations、Actions
+4.模块化：Store模块分割、命名空间
+5.练习：开发一个博客管理系统（列表→详情→编辑）
+
+阶段 4：高级特性与优化（2周）
+核心：性能优化和工程化实践
+1.混入（Mixins）和自定义指令：代码复用、DOM操作
+2.渲染函数和JSX：复杂组件开发
+3.性能优化：计算属性与侦听器、列表渲染优化
+4.工程化：Vue Loader、单文件组件、样式作用域
+5.练习：重构现有项目，应用性能优化技巧
+
+阶段 5：项目实战（按需学习）
+核心：综合运用Vue技术栈开发完整项目
+1.项目架构：前后端分离、API设计、数据流管理
+2.第三方集成：Element UI、Axios、Vue-i18n国际化
+3.部署上线：构建优化、CDN加速、服务器部署
+4.最佳实践：代码规范、测试策略、维护性考虑`,
+                    };
+                }
+            }).mount("#app");
+        </script>
+    </div>
+</body>
+
+</html>

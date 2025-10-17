@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaWeb学习需求文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入 Vue 3 依赖 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4" style="visibility: hidden;">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域 -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    {{ heroDesc }}
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:calendar" class="mr-2"></iconify-icon>
+                        {{ cycle }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:code-braces" class="mr-2"></iconify-icon>
+                        {{ tech }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:target" class="mr-2"></iconify-icon>
+                        {{ difficulty }}
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 需求文档主体 -->
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <!-- 项目概述 -->
+                <div id="overview" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:information-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        项目概述
+                    </h2>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">项目背景</h3>
+                        <p class="text-gray-600 mb-6">{{ projectOverview.background }}</p>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">项目目标</h3>
+                        <div class="text-gray-600 leading-relaxed whitespace-pre-line">{{ projectOverview.goalsText }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+            createApp({
+                data() {
+                    return {
+                        siteName: "智慧应用工作室",
+                        navLinks: [
+                            { href: "../初稿.html", label: "首页" },
+                            { href: "../后端第一期展示.html", label: "学习计划" },
+                            { href: "#overview", label: "项目概述" },
+                            { href: "#requirements", label: "功能需求" }
+                        ],
+                        heroTitle: "JavaWeb学习需求文档",
+                        heroDesc: "Java Web开发技术栈学习指南",
+                        cycle: "学习周期：1-2个月",
+                        tech: "技术：Servlet、JSP、Spring MVC",
+                        difficulty: "难度等级：中高级",
+                        projectOverview: {
+                            background: "Java Web开发是Java后端开发的核心内容，通过Servlet、JSP、Spring MVC等技术构建动态Web应用。Java Web开发具有跨平台性、安全性强、性能优秀等特点，是企业级应用开发的重要技术栈。",
+                            goalsText: "Java Web核心技术栈：\n\n1.Servlet技术：理解Servlet生命周期、工作原理，掌握HttpServletRequest/HttpServletResponse的使用，处理HTTP请求和响应。\n\n2.JSP技术：掌握JSP语法、指令、动作标签，理解JSP与Servlet的关系，实现动态页面生成。\n\n3.Spring MVC框架：学习MVC设计模式，掌握@Controller、@RequestMapping等注解，理解请求映射、数据绑定、视图解析等核心概念。\n\n4.Web应用架构：掌握三层架构（表现层、业务逻辑层、数据访问层），理解前端与后端的交互方式。\n\n学习目标：能够独立开发基于Java Web技术的企业级Web应用，掌握前后端分离开发模式，为Spring Boot等现代化框架学习奠定基础。",
+                        },
+                    };
+                }
+            }).mount("#app");
+        </script>
+    </div>
+</body>
+
+</html>

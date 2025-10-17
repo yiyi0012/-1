@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧应用工作室</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 1. 引入 Vue 3 依赖（核心） -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- 2. 引入 iconify 图标库（解决图标显示） -->
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+
+</head>
+
+
+<body>
+    <!-- Vue 挂载根容器（所有动态内容需放在此容器内） -->
+    <div id="app">
+        <!-- 顶部导航栏（动态渲染导航链接） -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <!-- <iconify-icon icon="mdi:recycle-variant" width="40" height="40" :style="{ color: techBlue }"></iconify-icon> -->
+                        <!-- 加入卡面的logo -->
+                        <img src="image/logo.png" alt="logo" class="w-12 h-12">
+
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <!-- 导航链接：通过 v-for 动态渲染 -->
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4" style="visibility: hidden;">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域（动态渲染标题和描述） -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 max-w-2xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-3xl">
+                    {{ heroDesc }}
+                </p>
+            </div>
+        </section>
+
+        <!-- 核心时间轴模块（动态渲染3个阶段） -->
+        <section id="timeline" class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-16">
+                    {{ timelineTitle }}
+                </h2>
+
+                <!-- 时间轴容器：v-for 循环渲染所有阶段 -->
+                <div class="timeline">
+                    <div class="timeline-item" :class="stage.direction" v-for="(stage, index) in timelineStages"
+                        :key="index">
+                        <div class="timeline-date">{{ stage.date }}</div>
+                        <div class="timeline-content card-hover transition-transform">
+                            <!-- 阶段图片 -->
+                            <img :src="stage.image" :alt="stage.title" class="w-full h-48 object-cover rounded-lg mb-4 cursor-pointer hover:opacity-80 transition-opacity" @click="showImageModal(stage.image, stage.title)">
+
+                            <!-- 阶段标题 -->
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
+                                {{ stage.title }}
+                            </h3>
+
+                            <!-- 下拉框展示简介 -->
+                            <details class="mb-4" open>
+                                <summary class="cursor-pointer text-tech-light hover:text-tech-accent font-medium flex items-center justify-center">
+                                    <iconify-icon icon="mdi:chevron-up" class="mr-2"></iconify-icon>
+                                    查看简介
+                                </summary>
+                                <div class="mt-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                    <p class="text-sm text-gray-600">{{ stage.description }}</p>
+                                    <div class="mt-2 flex gap-2">
+                                        <a v-if="stage.link" :href="stage.link" target="_blank" class="text-tech-light hover:text-tech-accent font-medium">查看详情 →</a>
+                                        <a v-if="stage.route" :href="stage.route" class="text-orange-500 hover:underline">查看路线 →</a>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 图片模态框 -->
+        <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="closeModal">
+            <div class="max-w-4xl max-h-screen p-4">
+                <img :src="modalImage" :alt="modalTitle" class="max-w-full max-h-full object-contain rounded-lg">
+                <button @click="closeModal" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+                    <iconify-icon icon="mdi:close"></iconify-icon>
+                </button>
+            </div>
+        </div>
+
+        <script>
+            // 1. 初始化 Vue 实例
+            const { createApp } = Vue;
+            createApp({
+                // 2. 定义响应式数据（所有动态内容都放在这里）
+                data() {
+                    return {
+                        // 站点基础信息
+                        siteName: "智慧应用工作室",
+                        techBlue: "#1e3a8a", // 统一颜色变量，方便维护
+                        // 模态框数据
+                        showModal: false,
+                        modalImage: '',
+                        modalTitle: '',
+                        // 导航栏数据
+                        navLinks: [
+                            { href: "初稿.html", label: "首页" },
+                            { href: "#timeline", label: "学习历程" },
+                            { href: "#teachers", label: "教师资源" },
+                            { href: "#help-center", label: "帮助中心" }
+                        ],
+                        // 主视觉区域数据
+                        heroTitle: "智慧应用工作室智造无限可能",
+                        heroDesc: "从基础到精通的技术成长之路，我们陪您一步步实现",
+                        // 时间轴数据（新增3个阶段，共5个阶段）
+                        timelineTitle: "技术学习时间轴",
+                        timelineStages: [
+                            // 阶段1：基础学习
+                            {
+                                direction: "timeline-left",
+                                date: "阶段 1: java基础学习（3天）",
+                                title: "利用基础知识写出学生管理系统",
+                                image: "image/学生管理系统.png",
+                                description: "Java 语法基础：变量与数据类型、运算符与表达式、控制流语句；面向对象核心概念：类与对象、封装、方法；集合框架应用等",
+                                link: "需求文档/SSM.html",
+                                route: "需求文档/Java基础学习路线.html"
+
+                            },
+                            // 阶段2：Java探索
+                             {
+                                 direction: "timeline-right",
+                                 date: "阶段 2: Java探索（10天）",
+                                 title: "Java学习",
+                                 image: "image//拼图小游戏.png",
+                                 description: "拼图小游戏是经典益智游戏，玩家需还原打乱的图片碎片。本项目是 Java 基础（变量、面向对象）、Swing/AWT 及集合框架后的综合实战，旨在提升图形化应用开发、面向对象思维、游戏逻辑设计能力，掌握简单游戏开发流程，为复杂 Java 应用积累经验。",
+                                 link: "需求文档/拼图小游戏需求文档.html"
+                             },
+                            // 阶段3：斗地主
+                             {
+                                 direction: "timeline-left",
+                                 date: "阶段 3: 斗地主小游戏（20天）",
+                                 title: "斗地主练习",
+                                 image: "image//斗地主小游戏.jpg",
+                                 description: "地主是三人扑克竞技游戏，核心规则为 “叫地主 - 出牌对抗 - 先出完牌获胜”，是大众熟知的娱乐玩法。本项目是学完 Java 基础、Swing/AWT、集合框架及多线程后的综合实战。​开发此游戏可深化面向对象思维（封装 “玩家”“扑克牌” 类），熟练用 Swing 搭界面，掌握多线程同步交互、牌型判断 / 胜负判定等逻辑，熟悉竞技类游戏开发流程，为复杂 Java 交互应用积累经验。",
+                                 link: "需求文档/斗地主小游戏需求文档.html"
+                             },
+                            // 阶段4：MySQL学习
+                             {
+                                 direction: "timeline-right",
+                                 date: "阶段 4: MySQL（2-3个月）",
+                                 title: "MySQL学习",
+                                 image: "image//MySQL.jpg",
+                                 description: "MySQL 是一款由瑞典 MySQL AB 公司开发，目前属于 Oracle 旗下的开源关系型数据库管理系统。它采用结构化查询语言（SQL）来访问数据库，由于其体积小、速度快、总体成本低、开放源代码等特点，广泛应用于 Internet 上的中小型网站开发，是最流行的数据库管理系统之一。",
+                                 link: "需求文档/MySQL.html",
+                                 route: "需求文档/MySQL学习路线.html"
+                             },
+                            // 阶段5：Java web学习
+                             {
+                                 direction: "timeline-left",
+                                 date: "阶段 5: JavaWeb（1-2个月）",
+                                 title: "JavaWeb学习",
+                                 image: "image//JavaWeb.png",
+                                 description: "学习SpringBoot框架，掌握自动配置、快速开发等特性。准备就业或进阶到微服务架构，为职业发展奠定基础。",
+                                 link: "需求文档/JavaWeb.html",
+                                 route: "需求文档/JavaWeb学习路线.html"
+                             },
+                            // 阶段6：SSM的查看路线链接正确添加到动态渲染中。
+                             {
+                                 direction: "timeline-right",
+                                 date: "阶段 6: SSM（2-3个月）",
+                                 title: "SSM",
+                                 image: "image/react学习.jpg",
+                                 description: "SSM框架是Java Web开发的核心技术栈，包括Spring、SpringMVC、MyBatis等框架。Spring框架提供IoC和AOP特性，SpringMVC处理Web请求，MyBatis实现数据持久化。学习这些框架能够构建企业级Java应用，包括Maven高级特性、SpringBoot整合和MyBatis-Plus的使用。",
+                                 link: "需求文档/SSM.html",
+                                 route: "需求文档/ssm学习路线.html"
+                             },
+                            // 阶段7：spring boot技术
+                             {
+                                 direction: "timeline-left",
+                                 date: "阶段 7: spring boot（1-2周）",
+                                 title: "spring boot学习",
+                                 image: "image/JS基础综合练习.png",
+                                 description: "Spring Boot是基于Spring框架的快速开发框架，提供自动配置、快速启动、内嵌服务器等特性。学习Spring Boot可以快速构建企业级应用，掌握依赖注入、RESTful API开发、数据库集成等核心技能，为现代Java Web开发奠定基础。",
+                                 link: "需求文档/SpringBoot.html",
+                                 route: "需求文档/SpringBoot学习路线.html"
+                             }
+                        ]
+                    };
+                },
+                methods: {
+                    showImageModal(image, title) {
+                        this.modalImage = image;
+                        this.modalTitle = title;
+                        this.showModal = true;
+                    },
+                    closeModal() {
+                        this.showModal = false;
+                        this.modalImage = '';
+                        this.modalTitle = '';
+                    }
+                }
+            }).mount("#app"); // 3. 将实例挂载到 #app 容器
+        </script>
+</body>
+
+</html>

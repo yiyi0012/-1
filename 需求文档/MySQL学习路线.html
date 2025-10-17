@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL学习路线</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入 Vue 3 依赖 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4" style="visibility: hidden;">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域 -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    {{ heroDesc }}
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:calendar" class="mr-2"></iconify-icon>
+                        {{ cycle }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:code-braces" class="mr-2"></iconify-icon>
+                        {{ tech }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:target" class="mr-2"></iconify-icon>
+                        {{ difficulty }}
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习路线主体 -->
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <!-- 学习路线 -->
+                <div id="roadmap" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:map-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        MySQL学习路线
+                    </h2>
+                    <div class="text-gray-600 leading-relaxed whitespace-pre-line">{{ roadmapContent }}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+            createApp({
+                data() {
+                    return {
+                        siteName: "智慧应用工作室",
+                        navLinks: [
+                            { href: "../初稿.html", label: "首页" },
+                            { href: "../后端第一期展示.html", label: "学习计划" },
+                            { href: "#roadmap", label: "学习路线" }
+                        ],
+                        heroTitle: "MySQL学习路线",
+                        heroDesc: "4个核心阶段，快速掌握MySQL数据库",
+                        cycle: "总周期：5-6周",
+                        tech: "技术：MySQL、Navicat",
+                        difficulty: "难度等级：入门到中级",
+                        roadmapContent: `学习路线：
+我把 MySQL 学习路线简化成 4 个核心阶段，每个阶段聚焦 1-2 个关键目标，不用复杂理论，能快速落地。
+
+阶段 1：入门（1 周）—— 会 "用" 数据库
+核心：搭建环境 + 搞定基础操作，能存数据、查数据。
+1.装环境：用简化工具（如 XAMPP）一键装 MySQL，搭配 Navicat 可视化界面，不用记命令先上手。
+2.学 3 个操作：会建数据库 / 表（比如建 "用户表"，含 ID、姓名、手机号）；会用 INSERT 存数据、SELECT 查数据（比如查 "姓名叫张三的用户"）。
+
+阶段 2：基础（2 周）—— 会"规范" 用数据库
+核心：设计合理的表结构 + 写复杂查询，应对日常需求。
+1.表设计：学字段类型（手机号用 VARCHAR(11)，年龄用 INT）和约束（给 ID 设 "主键"，手机号设 "非空 + 唯一"）。
+2.复杂查询：学 JOIN 关联多表（比如查 "订单表 + 用户表"，看谁下了单）、GROUP BY 统计（比如算 "每个月的订单总数"）。
+
+阶段 3：实战（2 周）—— 会 "解决" 实际问题
+核心：用真实场景练手，把知识变能力。
+1.做小项目：比如设计 "学生 - 成绩" 系统，建 3 张表（学生表、课程表、成绩表），实现 "查某学生的所有成绩""算某课程的平均分"。
+2.学避坑：会用事务保证数据安全（比如转账时 "扣钱 + 加钱" 必须同时成功），会备份数据（用 Navicat 导出 SQL 文件）。
+
+阶段 4：进阶（按需学）—— 会 "优化" 数据库
+核心：如果数据量大、查询慢，再学优化，非必学但重要。
+1.索引：给常用查询字段（如手机号）加索引，用 EXPLAIN 分析慢查询。
+2.进阶知识：按需学 "主从复制"（分担读写压力）、"分库分表"（处理千万级数据）。`,
+                    };
+                }
+            }).mount("#app");
+        </script>
+    </div>
+</body>
+
+</html>

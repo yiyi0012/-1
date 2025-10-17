@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpringBoot学习路线</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入 Vue 3 依赖 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4" style="visibility: hidden;">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域 -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    {{ heroDesc }}
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:calendar" class="mr-2"></iconify-icon>
+                        {{ cycle }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:code-braces" class="mr-2"></iconify-icon>
+                        {{ tech }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:target" class="mr-2"></iconify-icon>
+                        {{ difficulty }}
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习路线主体 -->
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <!-- 学习路线 -->
+                <div id="roadmap" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:map-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        SpringBoot学习路线
+                    </h2>
+                    <div class="text-gray-600 leading-relaxed whitespace-pre-line">{{ roadmapContent }}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+            createApp({
+                data() {
+                    return {
+                        siteName: "智慧应用工作室",
+                        navLinks: [
+                            { href: "../初稿.html", label: "首页" },
+                            { href: "../后端第一期展示.html", label: "学习计划" },
+                            { href: "#roadmap", label: "学习路线" }
+                        ],
+                        heroTitle: "SpringBoot学习路线",
+                        heroDesc: "快速掌握Spring Boot框架的完整学习路径",
+                        cycle: "总周期：1-2周",
+                        tech: "技术：Spring Boot、Maven",
+                        difficulty: "难度等级：中级",
+                        roadmapContent: `Spring Boot学习路线：
+
+阶段 1：基础入门（3天）
+核心：理解Spring Boot概念和快速搭建应用
+1.了解Spring Boot优势：自动配置、快速启动、内嵌服务器
+2.创建第一个Spring Boot应用：使用Spring Initializr生成项目
+3.理解项目结构：主启动类、配置文件、依赖管理
+
+阶段 2：核心特性（4天）
+核心：掌握Spring Boot的核心功能
+1.自动配置原理：@SpringBootApplication、条件配置
+2.配置文件管理：application.properties/yml、多环境配置
+3.Starter依赖：Web、Data JPA、Security等Starter的使用
+
+阶段 3：实战开发（3天）
+核心：构建完整的RESTful API应用
+1.RESTful API开发：Controller、RequestMapping、HTTP方法
+2.数据访问：Spring Data JPA、MySQL集成
+3.异常处理和验证：全局异常处理、数据验证
+
+阶段 4：高级特性（按需学习）
+核心：生产环境部署和优化
+1.安全配置：Spring Security集成
+2.监控和度量：Actuator端点、健康检查
+3.部署方式：Jar包部署、Docker容器化`,
+                    };
+                }
+            }).mount("#app");
+        </script>
+    </div>
+</body>
+
+</html>

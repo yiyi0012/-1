@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS学习路线</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4" style="visibility: hidden;">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域 -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    {{ heroDesc }}
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:calendar" class="mr-2"></iconify-icon>
+                        {{ cycle }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:code-braces" class="mr-2"></iconify-icon>
+                        {{ tech }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:target" class="mr-2"></iconify-icon>
+                        {{ difficulty }}
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习路线主体 -->
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <!-- 学习路线 -->
+                <div id="roadmap" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:map-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        JS学习路线
+                    </h2>
+                    <div class="text-gray-600 leading-relaxed whitespace-pre-line">{{ roadmapContent }}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+            createApp({
+                data() {
+                    return {
+                        siteName: "智慧应用工作室",
+                        navLinks: [
+                            { href: "../初稿.html", label: "首页" },
+                            { href: "../前端第一期展示.html", label: "学习计划" },
+                            { href: "#roadmap", label: "学习路线" }
+                        ],
+                        heroTitle: "JS学习路线",
+                        heroDesc: "系统掌握JavaScript基础的完整学习路径",
+                        cycle: "总周期：10-12周",
+                        tech: "技术：JavaScript核心语法与DOM操作",
+                        difficulty: "难度等级：中级",
+                        roadmapContent: `JS学习路线：
+
+一、基础入门（2-3 周）：搞定 JS 语法骨架
+目标：理解变量、逻辑、函数，能写简单代码片段。
+
+核心语法
+变量与数据：用let/const定义变量（替代var），掌握数据类型（string字符串、number数字、boolean布尔、null/undefined空值），会做类型转换（如Number('123')转数字）。
+逻辑控制：用if-else（多条件判断，如 “判断年龄是否成年”）、for/while循环（重复执行，如 “遍历 1-100 求和”）、switch（固定值匹配，如 “根据分数等级输出评语”）。
+函数：学函数定义（function add(a,b) { return a+b }）、调用（add(2,3)）、参数（普通参数、默认参数），理解 “函数是可复用的代码块”。
+练习：写 “计算两个数的加减乘除”“判断一个数是否为质数”“遍历数组求最大值”。
+
+二、核心能力（3-4 周）：掌握 DOM 与交互
+目标：操作页面元素，实现 “点击、输入、动态更新” 等交互，这是前端开发高频需求。
+
+DOM 操作（核心）
+选元素：用document.querySelector('.box')（选单个元素，支持类、ID、标签）、document.querySelectorAll('li')（选多个元素，返回列表）。
+改元素：
+内容：element.innerHTML = "新内容"（改 HTML 内容，如动态加列表项）、element.textContent（改纯文本）。
+样式：element.style.color = "#f00"（改行内样式）、element.classList.add('active')（加类名控制样式，推荐用类名而非直接改 style）。
+属性：element.src = "新图片路径"（改图片）、element.value（获取 / 改输入框内容）。
+
+事件绑定
+常用事件：onclick（点击，如 “点击按钮显示隐藏内容”）、oninput（输入，如 “实时监听搜索框输入”）、onload（页面加载完成后执行）。
+事件对象：理解event参数（如event.target获取触发事件的元素，event.preventDefault()阻止表单默认提交）。
+练习：做 “登录表单验证”（输入为空时提示错误）、“点击按钮切换图片”、“动态添加列表项”（输入内容 + 点击按钮，列表新增一项）。
+
+三、进阶拓展（2-3 周）：处理复杂场景
+目标：应对数组、对象、异步等常见需求，提升代码灵活性。
+
+数组与对象
+数组：掌握forEach（遍历数组，如 “遍历列表项改样式”）、filter（筛选，如 “筛选数组中大于 10 的数”）、map（映射，如 “将数组中所有数字乘 2”）、find（查找，如 “找数组中 id 为 1 的对象”）。
+对象：理解键值对结构（let user = {name: "张三", age: 20}），会取 / 改属性（user.name、user.age = 21），遍历对象（for (let key in user) { ... }）。
+
+异步基础
+定时器：用setTimeout（延迟执行，如 “3 秒后提示消息”）、setInterval（定时重复，如 “每秒更新时钟”）。
+简单异步：理解 “异步代码不阻塞后续执行”，比如定时器内的代码会晚于同步代码执行。
+练习：做 “待办清单”（用数组存待办数据，forEach渲染列表，filter实现删除待办）、“简易时钟”（setInterval每秒更新时间）。
+
+四、实战整合（2-3 周）：落地小项目
+目标：串联知识，解决真实场景问题。
+
+推荐项目
+选项 1：“简易计算器”—— 实现加减乘除、清空、小数点功能，处理 “除数为 0” 错误。
+选项 2：“数据搜索页”—— 用数组存商品数据，实时监听输入框，filter筛选匹配商品并渲染到页面。
+选项 3：“倒计时功能”—— 输入目标时间，setInterval每秒更新剩余时间（天、时、分、秒）。
+重点：关注 “代码复用（用函数封装重复逻辑）”“异常处理（如输入非数字提示）”“用户体验（如按钮点击反馈）”。`,
+                    };
+                }
+            }).mount("#app");
+        </script>
+    </div>
+</body>
+
+</html>

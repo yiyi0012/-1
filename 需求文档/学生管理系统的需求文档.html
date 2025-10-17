@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生管理系统需求文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入 Vue 3 依赖 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4" style="visibility: hidden;">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域 -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    {{ heroDesc }}
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:calendar" class="mr-2"></iconify-icon>
+                        开发周期：3天
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:code-braces" class="mr-2"></iconify-icon>
+                        技术栈：Java基础
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:target" class="mr-2"></iconify-icon>
+                        难度等级：入门级
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 需求文档主体 -->
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <!-- 项目概述 -->
+                <div id="overview" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:information-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        项目概述
+                    </h2>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">项目背景</h3>
+                        <p class="text-gray-600 mb-6">{{ projectOverview.background }}</p>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">项目目标</h3>
+                        <div class="text-gray-600 leading-relaxed whitespace-pre-line">{{ projectOverview.goalsText }}</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+            createApp({
+                data() {
+                    return {
+                        siteName: "智慧应用工作室",
+                        navLinks: [
+                            { href: "../初稿.html", label: "首页" },
+                            { href: "../后端第一期展示.html", label: "学习计划" },
+                            { href: "#overview", label: "项目概述" },
+                            // { href: "#requirements", label: "功能需求" }
+                        ],
+                        heroTitle: "学生管理系统需求文档",
+                        heroDesc: "基于Java基础语法开发的学生信息管理系统",
+                        projectOverview: {
+                            background: "学习java的基本路线： 学生管理系统是Java编程入门阶段的经典项目，通过实现学生信息的增删改查功能，帮助开发者掌握面向对象编程、集合框架、异常处理等基础概念。",
+                            goalsText: "- 案例需求\n\t针对目前我们的所学内容，完成一个综合案例：学生管理系统。该系统主要功能如下：\n\t添加学生：通过键盘录入学生信息，添加到集合中\n\t删除学生：通过键盘录入要删除学生的学号，将该学生对象从集合中删除\n\t修改学生：通过键盘录入要修改学生的学号，将该学生对象其他信息进行修改\n\t查看学生：将集合中的学生对象信息进行展示\n\t退出系统：结束程序\n- 实现步骤\n  1. 定义学生类，包含以下成员变量\n            private String sid            // 学生id\n            private String name       // 学生姓名\n            private String age          // 学生年龄\n            private String address   // 学生所在地\n  2. 学生管理系统主界面的搭建步骤\n     2.1 用输出语句完成主界面的编写\n     2.2 用Scanner实现键盘输入\n     2.3 用switch语句完成选择的功能\n     2.4 用循环完成功能结束后再次回到主界面\n  3. 学生管理系统的添加学生功能实现步骤\n     3.1 定义一个方法，接收ArrayList<Student>集合\n     3.2 方法内完成添加学生的功能\n              ①键盘录入学生信息\n              ②根据录入的信息创建学生对象\n              ③将学生对象添加到集合中\n              ④提示添加成功信息\n     3.3 在添加学生的选项里调用添加学生的方法\n  4. 学生管理系统的查看学生功能实现步骤\n     4.1 定义一个方法，接收ArrayList<Student>集合\n     4.2 方法内遍历集合，将学生信息进行输出\n     4.3 在查看所有学生选项里调用查看学生方法\n  5. 学生管理系统的删除学生功能实现步骤\n     5.1 定义一个方法，接收ArrayList<Student>集合\n     5.2 方法中接收要删除学生的学号\n     5.3 遍历集合，获取每个学生对象\n     5.4 使用学生对象的学号和录入的要删除的学号进行比较,如果相同，则将当前学生对象从集合中删除\n     5.5 在删除学生选项里调用删除学生的方法\n  6. 学生管理系统的修改学生功能实现步骤\n     6.1 定义一个方法，接收ArrayList<Student>集合\n     6.2 方法中接收要修改学生的学号\n     6.3 通过键盘录入学生对象所需的信息，并创建对象\n     6.4 遍历集合，获取每一个学生对象。并和录入的修改学生学号进行比较.如果相同，则使用新学生对象替换当前学生对象\n     6.5 在修改学生选项里调用修改学生的方法\n  7. 退出系统\n     使用System.exit(0);退出JVM",
+                        },
+                    };
+                }
+            }).mount("#app");
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS学习路线</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <style>.hidden-login-register { display: none; }</style>
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4 hidden-login-register" style="visibility: hidden;">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域 -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    {{ heroDesc }}
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:calendar" class="mr-2"></iconify-icon>
+                        {{ cycle }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:code-braces" class="mr-2"></iconify-icon>
+                        {{ tech }}
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:target" class="mr-2"></iconify-icon>
+                        {{ difficulty }}
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习路线主体 -->
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <!-- 学习路线 -->
+                <div id="roadmap" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:map-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        CSS学习路线
+                    </h2>
+                    <div class="text-gray-600 leading-relaxed whitespace-pre-line">{{ roadmapContent }}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+            createApp({
+                data() {
+                    return {
+                        siteName: "智慧应用工作室",
+                        navLinks: [
+                            { href: "../初稿.html", label: "首页" },
+                            { href: "../前端第一期展示.html", label: "学习计划" },
+                            { href: "#roadmap", label: "学习路线" }
+                        ],
+                        heroTitle: "CSS学习路线",
+                        heroDesc: "系统掌握CSS基础与CSS3核心的完整学习路径",
+                        cycle: "总周期：3-4周",
+                        tech: "技术：CSS基础与CSS3高级特性",
+                        difficulty: "难度等级：中级",
+                        roadmapContent: `CSS学习路线：
+
+CSS 基础（1 周）
+选择器：会用元素选择器（p { ... }）、类选择器（.box { ... }，复用性强，必学）、ID 选择器（#header { ... }，唯一）、后代选择器（nav a { ... }，选 nav 下的 a 标签），能精准定位要改的元素。
+
+核心样式：
+文本：color（文字色，如#333）、font-size（字号，如16px）、font-weight（粗细，bold加粗）、text-align（对齐，center居中）。
+盒模型：width/height（宽高）、margin（外边距，控制元素间距，margin: 0 auto水平居中）、padding（内边距，控制内容与边框距离）、border（边框，如border: 1px solid #eee），理解 “盒模型 = 内容 + 内边距 + 边框 + 外边距”。
+背景：background-color（背景色）、background-image: url("图片")（背景图）、background-size: cover（图片覆盖容器）。
+
+CSS3 重点（1-2 周，H5 配套核心）
+布局：flex 弹性布局（必学）：给父容器加display: flex，用justify-content（水平对齐，如space-between两端对齐）、align-items（垂直对齐，如center居中）、flex-wrap（换行，避免溢出），快速实现导航栏均匀排列、卡片垂直居中、多列布局。
+示例：导航栏父容器nav { display: flex; justify-content: space-between; align-items: center; }，让 logo 居左、菜单居右，且垂直居中。
+
+美化特效：
+border-radius（圆角，如5px小圆角、50%圆形）、box-shadow（阴影，如0 2px 8px rgba(0,0,0,0.1)，柔和阴影）。
+transform（变形，如transform: scale(1.1) hover 时放大、rotate(30deg)旋转）、transition（过渡，如transition: all 0.3s，让变形 / 颜色变化更平滑）。
+
+响应式基础：用@media查询，如@media (max-width: 768px) { ... }，在屏幕宽度≤768px（手机端）时修改样式（如导航栏隐藏，显示汉堡按钮）。
+
+练习：优化 “个人介绍页”—— 用 flex 让头像和文字水平居中，给卡片加圆角 + 阴影，按钮 hover 时用transform放大 +transition过渡，加@media让手机端文字换行不溢出。`,
+                    };
+                }
+            }).mount("#app");
+        </script>
+    </div>
+</body>
+
+</html>

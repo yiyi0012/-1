@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧应用工作室</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 1. 引入 Vue 3 依赖（核心） -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- 2. 引入 iconify 图标库（解决图标显示） -->
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <!-- Vue 挂载根容器（所有动态内容需放在此容器内） -->
+    <div id="app">
+        <!-- 顶部导航栏（动态渲染导航链接） -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <!-- <iconify-icon icon="mdi:recycle-variant" width="40" height="40" :style="{ color: techBlue }"></iconify-icon> -->
+                    <!-- 加入卡面的logo -->
+                    <img src="image/logo.png" alt="logo" class="w-12 h-12">
+
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <!-- 导航链接：通过 v-for 动态渲染 -->
+                <div class="hidden md:flex space-x-8">
+                    <a 
+                        v-for="(item, index) in navLinks" 
+                        :key="index"
+                        :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors"
+                    >
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域（动态渲染标题和描述） -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 max-w-2xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-3xl">
+                    {{ heroDesc }}
+                </p>
+            </div>
+        </section>
+
+        <!-- 核心时间轴模块（动态渲染3个阶段） -->
+        <section id="timeline" class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-16">
+                    {{ timelineTitle }}
+                </h2>
+
+                <!-- 时间轴容器：v-for 循环渲染所有阶段 -->
+                <div class="timeline">
+                    <div 
+                        class="timeline-item" 
+                        :class="stage.direction" 
+                        v-for="(stage, index) in timelineStages" 
+                        :key="index"
+                    >
+                        <div class="timeline-date">{{ stage.date }}</div>
+                        <div class="timeline-content card-hover transition-transform">
+                            <!-- 阶段标题 + 图标 -->
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <iconify-icon :icon="stage.icon" class="mr-2 text-tech-light"></iconify-icon>
+                                {{ stage.title }}
+                            </h3>
+
+                            <!-- 渲染“学习路线”（阶段1） -->
+                            <template v-if="stage.routes">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                    <div class="bg-blue-50 p-3 rounded-lg" v-for="(route, idx) in stage.routes" :key="idx">
+                                        <h4 class="font-bold text-tech-blue mb-1">{{ route.name }}</h4>
+                                        <p class="text-sm text-gray-600">{{ route.desc }}</p>
+                                        <img v-if="route.image" :src="route.image" alt="课程图片" class="w-full h-auto mt-2 rounded">
+                                    </div>
+                                </div>
+                                <a href="https://www.bilibili.com/video/BV1iE411x7gS?t=0.7" target="_blank" class="text-tech-light hover:text-tech-accent font-medium">查看详细路线 →</a>
+                    
+                            </template>
+
+                            <!-- 渲染“前端三件套基础课程”（阶段2/4） -->
+                            <template v-else-if="stage.resources">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div @click="handleClick(res.link)" class="content-card p-4 rounded-lg" v-for="(res, idx) in stage.resources" :key="idx">
+                                        
+            
+                                        <div class="flex justify-between items-start mb-2">
+                                            <span 
+                                                class="text-xs font-medium px-2 py-1 rounded"
+                                                :class="[res.bgClass, res.textClass]"
+                                            >
+                                                {{ res.category }}
+                                            </span>
+                    
+                                            <span class="text-xs text-gray-500">
+                                                <iconify-icon icon="mdi:star" class="mr-1 text-yellow-400"></iconify-icon>{{ res.rating }}
+                                            </span>
+                                        </div>
+                                        <h4 class="font-bold text-gray-800 text-sm mb-1">{{ res.name }}</h4>
+                                        <img v-if="res.image" :src="res.image" alt="课程图片" class="w-full h-auto mt-2 rounded">
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- 渲染“项目实践”（阶段3） -->
+                            <template v-else-if="stage.projects">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                        <!-- 左侧项目卡片 -->
+                                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                            <div class="flex items-center mb-3">
+                                                <iconify-icon :icon="stage.projects.icon" class="text-tech-light mr-2"></iconify-icon>
+                                                <h4 class="font-bold text-gray-800">{{ stage.projects.name }}</h4>
+                                            </div>
+                                            <p class="text-sm text-gray-600 mb-3">{{ stage.projects.desc }}</p>
+                                            <img v-if="stage.projects.image" :src="stage.projects.image" alt="项目图片" class="w-full h-auto mt-2 rounded">
+                                            <div class="flex flex-wrap gap-2">
+                                                <span class="text-xs bg-gray-100 px-2 py-1 rounded" v-for="(tag, idx) in stage.projects.tags" :key="idx">{{ tag }}</span>
+                                                <a href="https://www.bilibili.com/video/BV1iE411x7gS?t=0.7" target="_blank" class="text-tech-light hover:text-tech-accent font-medium">查看详细路线 →</a>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 右侧项目卡片 (新增) -->
+                                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                            <div class="flex items-center mb-3">
+                                                <iconify-icon :icon="stage.projects.secondIcon || stage.projects.icon" class="text-tech-light mr-2"></iconify-icon>
+                                                <h4 class="font-bold text-gray-800">{{ stage.projects.secondName }}</h4>
+                                            </div>
+                                            <p class="text-sm text-gray-600 mb-3">{{ stage.projects.secondDesc }}</p>
+                                            <img v-if="stage.projects.secondImage" :src="stage.projects.secondImage" alt="第二个项目图片" class="w-full h-auto mt-2 rounded">
+                                            <div class="flex flex-wrap gap-2">
+                                                <span class="text-xs bg-gray-100 px-2 py-1 rounded" v-for="(tag, idx) in stage.projects.secondTags" :key="'second-' + idx">{{ tag }}</span>
+                                                <a href="https://www.bilibili.com/video/BV1ZB4y1Z7o8?t=1.8" target="_blank" class="text-tech-light hover:text-tech-accent font-medium">查看详细路线 →</a>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                
+                            </template>
+
+
+                            <!-- 渲染“就业/进阶”（阶段5） -->
+                            <template v-else-if="stage.career">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <h4 class="font-bold text-tech-blue mb-2 flex items-center">
+                                            <iconify-icon icon="mdi:briefcase" class="mr-2"></iconify-icon>就业方向
+                                        </h4>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li v-for="(dir, idx) in stage.career.directions" :key="idx">• {{ dir }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <h4 class="font-bold text-tech-blue mb-2 flex items-center">
+                                            <iconify-icon icon="mdi:trophy" class="mr-2"></iconify-icon>能力要求
+                                        </h4>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li v-for="(req, idx) in stage.career.requirements" :key="idx">• {{ req }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                        <h4 class="font-bold text-tech-blue mb-2 flex items-center">
+                                            <iconify-icon icon="mdi:arrow-trend-up" class="mr-2"></iconify-icon>进阶路径
+                                        </h4>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li v-for="(path, idx) in stage.career.paths" :key="idx">• {{ path }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <button class="text-tech-light hover:text-tech-accent font-medium">获取求职指南 →</button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>   
+
+
+<script>
+const { createApp } = Vue;
+createApp({
+    // 定义响应式数据
+    data() {
+        return {
+            // 站点基础信息
+            siteName: "智慧应用工作室",
+            techBlue: "#1e3a8a", // 统一颜色变量，方便维护
+            // 导航栏数据
+            navLinks: [
+                { href: "初稿.html", label: "首页" },
+                { href: "#timeline", label: "学习历程" },
+                { href: "#teachers", label: "教师资源" },
+                { href: "#help-center", label: "帮助中心" }
+            ],
+            // 主视觉区域数据
+            heroTitle: "智慧应用工作室智造无限可能",
+            heroDesc: "从基础到精通的技术成长之路，我们陪你一步步实现",
+            // 时间轴数据
+            timelineTitle: "技术学习时间轴",
+            timelineStages: [
+                // 阶段1：入门探索
+                {
+                    direction: "timeline-left",
+                    date: "阶段 1: 入门探索（1-2个月）",
+                    title: "产品经理基础课",
+                    routes: [
+                        { 
+                            name: "前端开发",                            
+                            image: "https://i1.hdslb.com/bfs/archive/31fc0f374476e2953c4310704ddd71dabb99f097.jpg@672w_378h_1c_!web-search-common-cover.avif"
+                        }
+                    ]
+                },
+                // 阶段2：基础学习
+                {
+                    direction: "timeline-right",
+                    date: "阶段 2: 基础学习（2-3个月）",
+                    title: "前端三件套基础课程",
+                    icon: "mdi:book-open",
+                    resources: [
+                        {
+                            category: "前端开发",
+                            name: "html5",
+                            rating: 4.8,
+                            bgClass: "bg-blue-100",
+                            textClass: "text-tech-light",
+                            image:"https://i0.hdslb.com/bfs/archive/84705cdc024a6c7ba5fdc86977e2e27e49a5685a.jpg@672w_378h_1c_!web-search-common-cover.avif",
+                            link:"https://www.bilibili.com/video/BV1kM4y127Li?t=1.6"
+                        },
+                        {
+                            category: "前端开发",
+                            name: "快速入门css",
+                            rating: 4.9,
+                            bgClass: "bg-blue-100",
+                            textClass: "text-tech-light",
+                            image:"https://i0.hdslb.com/bfs/archive/3265a0ccfe9126c43a8b5c2f2e8fa62dfb538f90.jpg@672w_378h_1c_!web-search-common-cover.avif", 
+                            link:"https://www.bilibili.com/video/BV1kM4y127Li?t=2.0&p=30"
+                        },
+                        {
+                            category: "前端开发",
+                            name: "Javascript",
+                            rating: 4.9,
+                            bgClass: "bg-orange-100",
+                            textClass: "text-tech-accent",
+                            image:"https://i0.hdslb.com/bfs/archive/7cbcf700e3950f40dab97b5e57c8581733fdad22.jpg@672w_378h_1c_!web-search-common-cover.avif",
+                            link:"https://www.bilibili.com/video/BV1MvaVzUEuz?t=5.3"
+                        }
+                    ]
+                },
+                // 阶段3：项目实践
+                {
+                    direction: "timeline-left",
+                    date: "阶段 3: vue框架（3-4个月）",
+                    title: "VUE3快速入门",
+                    icon: "mdi:code-braces",
+                    // 在阶段3的projects对象中添加第二个项目的信息
+                    projects: {
+                        name: "vue3入门到实战",
+                        desc: "从零开发包含创建项目、项目结构、路由、组件、状态管理、表单处理、API调用等",
+                        icon: "mdi:blog",
+                        image: "https://i0.hdslb.com/bfs/archive/c0247f29a115368ed1d236126a8b0cae0dd1396e.jpg@672w_378h_1c_!web-search-common-cover.avif",
+                        tags: ["Vue3", "入门", "实战"],
+                        
+                        // 第二个项目信息
+                        secondName: "React基础入门",
+                        secondDesc: "React18 新特性全解析与实战指南",
+                        secondIcon: "mdi:package-variant",
+                        secondImage: "https://i1.hdslb.com/bfs/archive/b7e46b166914fcf4d388b0462740617b2c345f45.jpg@672w_378h_1c_!web-search-common-cover.avif",
+                        secondTags: ["组件库", "封装", "发布"]
+                    }
+                },
+                // 阶段4：技能深化
+                {
+                    direction: "timeline-right",
+                    date: "阶段 4: 技能深化（2-3个月）",
+                    title: "进阶学习资源",
+                    icon: "mdi:graduation-cap",
+                    resources: [
+                        {
+                            category: "前端进阶",
+                            name: "Vue3 源码解析",
+                            desc: "响应式原理、虚拟DOM、组件渲染流程",
+                            rating: 4.9,
+                            bgClass: "bg-blue-100",
+                            textClass: "text-tech-light"
+                        },
+                        {
+                            category: "前端进阶",
+                            name: "前端性能优化实战",
+                            desc: "首屏加载、懒加载、缓存策略、Core Web Vitals",
+                            rating: 4.8,
+                            bgClass: "bg-blue-100",
+                            textClass: "text-tech-light"
+                        },
+                        {
+                            category: "后端进阶",
+                            name: "微服务架构设计",
+                            desc: "服务拆分、网关（Gateway）、服务注册与发现",
+                            rating: 4.9,
+                            bgClass: "bg-orange-100",
+                            textClass: "text-tech-accent"
+                        },
+                        {
+                            category: "数据进阶",
+                            name: "深度学习基础",
+                            desc: "神经网络、CNN、TensorFlow/PyTorch入门",
+                            rating: 4.7,
+                            bgClass: "bg-green-100",
+                            textClass: "text-success"
+                        },
+                        {
+                            category: "移动进阶",
+                            name: "Flutter 性能优化",
+                            desc: "渲染优化、内存管理、原生交互",
+                            rating: 4.8,
+                            bgClass: "bg-purple-100",
+                            textClass: "text-purple-600"
+                        },
+                        {
+                            category: "DevOps",
+                            name: "CI/CD 自动化部署",
+                            desc: "GitHub Actions、Docker、Nginx配置",
+                            rating: 4.6,
+                            bgClass: "bg-gray-100",
+                            textClass: "text-gray-700"
+                        }
+                    ]
+                },
+                // 阶段5：就业/进阶
+                {
+                    direction: "timeline-left",
+                    date: "阶段 5: 就业/进阶（1-2个月）",
+                    title: "职业发展准备",
+                    icon: "mdi:user-tie",
+                    career: {
+                        directions: [
+                            "前端开发工程师",
+                            "后端开发工程师",
+                            "全栈开发工程师",
+                            "数据分析师/算法工程师",
+                            "移动应用开发工程师"
+                        ],
+                        requirements: [
+                            "熟练掌握1-2门技术栈",
+                            "2-3个完整项目经验",
+                            "具备问题排查与调试能力",
+                            "了解技术选型思路",
+                            "良好的代码规范与文档习惯"
+                        ],
+                        paths: [
+                            "初级工程师 → 中级工程师 → 技术专家",
+                            "技术转产品/运营/管理",
+                            "自主创业/开源项目",
+                            "深造（研究生/专项课程）"
+                        ]
+                    }
+                },
+                // 阶段6：高级进阶与创业
+                {
+                    direction: "timeline-right",
+                    date: "阶段 6: 高级进阶与创业（持续学习）",
+                    title: "终身学习与创新",
+                    icon: "mdi:rocket-launch",
+                    career: {
+                        directions: [
+                            "技术架构师",
+                            "创业公司CTO",
+                            "开源项目维护者",
+                            "技术培训讲师",
+                            "独立开发者"
+                        ],
+                        requirements: [
+                            "精通多门技术栈",
+                            "领导团队经验",
+                            "开源贡献记录",
+                            "技术写作与分享能力",
+                            "创新思维与创业精神"
+                        ],
+                        paths: [
+                            "技术专家 → 架构师 → CTO",
+                            "创业孵化与投资",
+                            "开源生态建设",
+                            "技术教育与培训",
+                            "终身学习与自我提升"
+                        ]
+                    }
+                }
+            ]
+        };
+    },
+    // 方法定义
+    methods: {
+        handleClick(link) {
+            window.open(link, '_blank');
+        }
+    }
+}).mount("#app");
+ // 3. 将实例挂载到 #app 容器
+</script>
+</body>
+</html>
+            

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小兔鲜儿需求文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入 Vue 3 依赖 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域 -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    {{ heroDesc }}
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:calendar" class="mr-2"></iconify-icon>
+                        开发周期：10天
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:code-braces" class="mr-2"></iconify-icon>
+                        技术：JS基础知识
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:target" class="mr-2"></iconify-icon>
+                        难度等级：入门级
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 需求文档主体 -->
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <!-- 项目概述 -->
+                <div id="overview" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:information-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        项目概述
+                    </h2>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">项目背景</h3>
+                        <p class="text-gray-600 mb-6">{{ projectOverview.background }}</p>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">项目目标</h3>
+                        <div class="text-gray-600 leading-relaxed whitespace-pre-line">{{ projectOverview.goalsText }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+            createApp({
+                data() {
+                    return {
+                        siteName: "智慧应用工作室",
+                        navLinks: [
+                            { href: "../初稿.html", label: "首页" },
+                            { href: "../后端第一期展示.html", label: "学习计划" },
+                            { href: "#overview", label: "项目概述" },
+                            { href: "#requirements", label: "功能需求" }
+                        ],
+                        heroTitle: "小兔鲜儿需求文档",
+                        heroDesc: "生鲜电商平台完整页面设计与功能规范",
+                        projectOverview: {
+                            background: "小兔鲜儿是一个专注于生鲜电商的在线购物平台，提供新鲜蔬菜、水果、肉类等优质农产品，帮助用户便捷购买健康食品。",
+                            goalsText: "（一）功能需求​\n首页核心功能​\n轮播图模块：实现自动轮播（每隔 3 秒切换图片），支持左右箭头手动切换、底部指示器点击切换，鼠标悬停轮播图时暂停自动播放，离开后恢复；轮播切换时添加平滑过渡动画，提升视觉体验。​\n商品分类导航：顶部分类栏点击不同分类（如水果、蔬菜、肉类），动态加载对应分类下的商品列表；侧边分类菜单支持展开 / 折叠，鼠标悬停分类项时显示高亮样式。​\n限时秒杀模块：实现倒计时功能，实时展示距离活动结束的时、分、秒；秒杀商品列表支持按销量 / 价格排序，点击 “加入购物车” 按钮时触发库存校验（若库存为 0，禁用按钮并提示 “已售罄”）。​\n商品相关功能​\n商品列表页：支持分页加载商品，点击 “下一页”“上一页” 或页码切换页面；提供商品搜索功能，输入关键词后点击搜索按钮，实时筛选出名称含关键词的商品；支持商品筛选（如按价格区间、销量范围筛选），筛选条件变化时动态更新商品列表。​\n商品详情页：加载商品详情（图片、名称、价格、规格、库存、详情描述），支持规格选择（如重量、包装类型），选择不同规格时同步更新商品价格；点击 “加入购物车” 时，判断用户是否登录（未登录则弹窗提示跳转登录页），登录状态下添加商品到购物车并提示 “添加成功”；支持商品图片预览，点击缩略图切换主图显示。​\n购物车功能​\n购物车管理：展示已添加的商品（含商品图片、名称、规格、单价、数量、小计），支持修改商品数量（点击 “+”“-” 按钮或直接输入数量，数量变化时同步更新小计金额与购物车总金额）；支持删除单个商品或清空购物车，删除时弹出确认弹窗（点击 “确认” 执行删除，“取消” 关闭弹窗）。​\n购物车状态同步：页面刷新后保留购物车数据（使用 localStorage 存储）；商品库存不足时（如购物车商品数量大于当前库存），高亮提示 “库存不足，已自动调整至最大库存”，并同步更新数量与金额。​\n用户交互功能​\n登录 / 注册模块：登录表单支持账号（手机号）、密码验证（手机号格式需符合 11 位数字规则，密码长度不小于 6 位），验证不通过时实时提示错误信息（如 “手机号格式错误”“密码不能为空”）；支持 “记住账号” 功能（勾选后下次打开页面自动填充账号）；注册功能需实现短信验证码发送（模拟倒计时 60 秒后可重新发送），验证码输入正确且两次密码一致时，提示注册成功并跳转登录页。​\n个人中心入口：登录状态下，顶部导航栏显示用户昵称，点击昵称跳转个人中心（展示用户基本信息，如头像、手机号、会员等级）；未登录状态下，点击 “我的” 按钮跳转登录页。​\n全局交互反馈：所有按钮点击时添加轻微按压动画；异步操作（如加载商品数据、提交登录信息）时显示加载动画（如旋转图标）；操作成功 / 失败时弹出对应提示（如 “登录成功”“网络错误，请重试”），提示框 3 秒后自动关闭。​\n（二）界面需求​\n整体风格​\n界面风格贴合生鲜电商定位，主色调采用绿色（#27AE60，代表新鲜、健康）与白色，辅助色采用橙色（#FF9F43，用于突出按钮、价格、活动标签）；页面布局清晰，模块间保留适当间距（16px-24px），避免内容拥挤。​\n字体统一使用无衬线字体（如微软雅黑、Roboto），正文字体大小 14px，商品名称 / 标题字体大小 16px，大标题（如 “限时秒杀”）字体大小 20px；文字颜色区分层级：正文为 #333333，辅助文字（如规格说明）为 #666666，提示文字（如错误提示）为 #E53935。​\n商品卡片、按钮、输入框等元素添加圆角设计（ border-radius: 4px-8px），避免尖锐边缘；鼠标悬停商品卡片时添加阴影效果（box-shadow: 0 2px 8px rgba (0,0,0,0.1)），增强立体感。​\n响应式适配​\n支持电脑端（屏幕宽度≥1200px）、平板端（768px≤屏幕宽度＜1200px）、手机端（屏幕宽度＜768px）三种设备尺寸适配：​\n电脑端：完整展示所有模块，商品列表页每行展示 4-5 件商品，购物车侧边弹出（不占满屏幕）。​\n平板端：首页轮播图高度适当缩减，商品列表页每行展示 2-3 件商品，侧边分类菜单改为顶部下拉菜单，购物车全屏展示。​\n手机端：顶部导航栏改为汉堡菜单（点击展开导航选项），轮播图隐藏左右箭头（支持滑动切换），商品列表页每行展示 1 件商品，购物车简化布局（隐藏商品缩略图，仅保留名称、规格、数量、金额）。​\n细节规范​\n图片加载：商品图片、轮播图图片需优化加载速度（使用懒加载，滚动到可视区域再加载），图片加载失败时显示默认占位图（如 “暂无图片” 图标），避免页面布局错乱。​\n表单样式：输入框获取焦点时添加边框高亮（边框颜色变为主色 #27AE60），禁用状态的按钮（如库存为 0 的 “加入购物车” 按钮）样式为灰色（#CCCCCC），且鼠标 hover 时无变化。​\n数据展示：价格数字使用橙色突出显示，小数部分字体大小比整数部分小 2px；库存数量小于 10 时，添加 “库存紧张” 红色标签；商品销量格式化为 “1.2 万”“998” 等易读形式。​\n（三）技术需求​\nJS 核心技术要求​\n熟练运用 DOM 操作：实现元素的创建、删除、修改（如动态添加商品列表项、更新购物车金额），以及事件绑定（如点击、鼠标悬停、表单提交事件），掌握事件委托优化事件处理（如商品列表的删除按钮统一绑定事件）。​\n灵活运用 ES6 + 特性：使用箭头函数简化函数写法，解构赋值处理商品数据，Promise 或 async/await 处理异步请求（如获取商品列表、用户登录验证），避免回调地狱。​\n数据存储与处理：使用 localStorage 存储购物车数据、用户登录状态（非敏感信息），实现页面刷新后数据不丢失；使用数组方法（如 filter、map、reduce）处理商品列表筛选、购物车金额计算等逻辑。​\n异步请求：通过 Ajax（或 fetch API）与模拟接口（如 Mock.js 生成的测试接口）交互，实现商品数据加载、用户登录 / 注册信息提交、库存校验等功能，能处理请求成功、失败、超时等场景。​\n动画与交互：使用 JS 结合 CSS 实现轮播过渡、按钮点击反馈、弹窗显示 / 隐藏等动画；实现页面滚动监听（如商品懒加载、回到顶部按钮显示 / 隐藏）。​\n兼容性要求​\n兼容主流浏览器：Chrome、Firefox、Safari、Edge（版本≥88），确保在不同浏览器中功能正常（如轮播图切换、表单验证、异步请求），样式无明显偏差；针对浏览器差异，使用兼容性 API（如对 fetch API 添加 polyfill，确保低版本浏览器支持）。​\n性能与代码规范要求​\n性能优化：减少 DOM 操作次数（如批量创建商品元素后一次性插入页面，避免频繁重排重绘）；合理使用事件委托，减少事件绑定数量；图片懒加载降低初始页面加载压力。​\n代码规范：采用模块化开发（如将轮播图逻辑、购物车逻辑、请求工具分别封装为独立 JS 文件），避免全局变量污染；函数命名、变量命名遵循语义化（如 getGoodsList、cartTotalPrice），代码注释清晰（关键逻辑添加说明，便于后期维护）。",
+                        },
+                    };
+                }
+            }).mount("#app");
+        </script>
+</body>
+
+</html>

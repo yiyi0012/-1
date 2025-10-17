@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧应用工作室</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 1. 引入 Vue 3 依赖（核心） -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- 2. 引入 iconify 图标库（解决图标显示） -->
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+
+</head>
+
+
+<body>
+    <!-- Vue 挂载根容器（所有动态内容需放在此容器内） -->
+    <div id="app">
+        <!-- 顶部导航栏（动态渲染导航链接） -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <!-- <iconify-icon icon="mdi:recycle-variant" width="40" height="40" :style="{ color: techBlue }"></iconify-icon> -->
+                        <!-- 加入卡面的logo -->
+                        <img src="image/logo.png" alt="logo" class="w-12 h-12">
+
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <!-- 导航链接：通过 v-for 动态渲染 -->
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4" style="visibility: hidden;">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域（动态渲染标题和描述） -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 max-w-2xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-3xl">
+                    {{ heroDesc }}
+                </p>
+            </div>
+        </section>
+
+        <!-- 核心时间轴模块（动态渲染3个阶段） -->
+        <section id="timeline" class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-16">
+                    {{ timelineTitle }}
+                </h2>
+
+                <!-- 时间轴容器：v-for 循环渲染所有阶段 -->
+                <div class="timeline">
+                    <div class="timeline-item" :class="stage.direction" v-for="(stage, index) in timelineStages"
+                        :key="index">
+                        <div class="timeline-date">{{ stage.date }}</div>
+                        <div class="timeline-content card-hover transition-transform">
+                            <!-- 阶段图片 -->
+                            <div>工作室学习成果与建议路线：</div>
+                            <img :src="stage.image" :alt="stage.title" class="w-full h-48 object-cover rounded-lg mb-4 cursor-pointer hover:opacity-80 transition-opacity" @click="stage.index === 0 ? openExternalLink('https://j9wk1m.axshare.com/#id=1v7j4m&p=page_1') : (stage.index === 3 ? openExternalLink('小兔鲜儿综合案例//index.html') : showImageModal(stage.image, stage.title))">
+                            <img v-if="stage.index === 0" src="image//原型.png" alt="原型图" class="w-full h-48 object-cover rounded-lg mb-4 cursor-pointer hover:opacity-80 transition-opacity" @click="openExternalLink('https://74gvki.axshare.com')">
+                            <img v-if="stage.index === 3" src="image//放大镜效果.png" alt="放大镜效果" class="w-full h-48 object-cover rounded-lg mb-4 cursor-pointer hover:opacity-80 transition-opacity" @click="openExternalLink('小兔鲜儿综合案例//放大镜效果//product-dev.html')">
+                            
+                            <!-- 阶段标题 -->
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
+                                {{ stage.title }}
+                            </h3>
+
+                            <!-- 下拉框展示简介 -->
+                            <details class="mb-4" open>
+                                <summary
+                                    class="cursor-pointer text-tech-light hover:text-tech-accent font-medium flex items-center justify-center">
+                                    <iconify-icon icon="mdi:chevron-up" class="mr-2"></iconify-icon>
+                                    查看简介
+                                </summary>
+                                <div class="mt-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <p class="text-sm text-gray-600">{{ stage.description }}</p>
+                                <div class="mt-2 flex gap-2">
+                                    <a v-if="stage.link" :href="stage.link" target="_blank" class="text-tech-light hover:text-tech-accent font-medium">查看详情 →</a>
+                                    <a v-if="stage.route" :href="stage.route" target="_blank" class="text-tech-accent hover:text-tech-blue font-medium">查看路线 →</a>
+                                </div>
+                            </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 图片模态框 -->
+        <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="closeModal">
+            <div class="max-w-4xl max-h-screen p-4">
+                <img :src="modalImage" :alt="modalTitle" class="max-w-full max-h-full object-contain rounded-lg">
+                <button @click="closeModal" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+                    <iconify-icon icon="mdi:close"></iconify-icon>
+                </button>
+            </div>
+        </div>
+
+        <script>
+            // 1. 初始化 Vue 实例
+            const { createApp } = Vue;
+            createApp({
+                // 2. 定义响应式数据（所有动态内容都放在这里）
+                data() {
+                    return {
+                        // 站点基础信息
+                        siteName: "智慧应用工作室",
+                        techBlue: "#1e3a8a", // 统一颜色变量，方便维护
+                        // 模态框数据
+                        showModal: false,
+                        modalImage: '',
+                        modalTitle: '',
+                        // 导航栏数据
+                        navLinks: [
+                            { href: "初稿.html", label: "首页" },
+                            { href: "#timeline", label: "学习历程" },
+                            // { href: "#teachers", label: "教师资源" },
+                            // { href: "#help-center", label: "帮助中心" }
+                        ],
+                        // 主视觉区域数据
+                        heroTitle: "智慧应用智造无限可能",
+                        heroDesc: "从基础到精通的技术成长之路，我们陪你一步步实现",
+                        // 时间轴数据（新增3个阶段，共5个阶段）
+                        timelineTitle: "技术学习时间轴",
+                        timelineStages: [
+                            // 阶段1：基础学习
+                            {
+                                direction: "timeline-left",
+                                date: "阶段 1: 基础学习（3天）",
+                                title: "原型图登陆界面",
+                                image: "image/原型图展示.png",
+                                description: "制作登录界面原型图需掌握：界面布局规划、基础 UI 组件运用、用户交互逻辑设计、基本用户体验原则，以及原型工具的基础操作。",
+                                link: "需求文档/原型图的需求文档.html",
+                                index: 0
+                            },
+                            // 阶段2：html探索
+                            {
+                                direction: "timeline-right",
+                                date: "阶段 2: html基础学习（3天）",
+                                title: "html基础学习",
+                                image: "image/html基础综合练习.png",
+                                description: "通过制作该注册信息页面，旨在帮助学习者巩固 HTML 基础语法，熟练运用表单相关标签（如<form> <input> <select> <textarea>等）、表单控件属性（如type name placeholder required等）及页面结构标签（如<div> <h1> <p>等），掌握页面结构化搭建的思路与方法，理解表单数据收集的基本逻辑，为后续结合 CSS 美化、JS 实现交互打下坚实的结构基础。",
+                                link: "需求文档/html需求文档.html",
+                                route: "需求文档/html学习路线.html"
+                            },
+                            // 阶段3：CSS
+                             {
+                                 direction: "timeline-left",
+                                 date: "阶段 3: css学习（15天）",
+                                 title: "CSS学习",
+                                 image: "image//css基础综合练习.png",
+                                 description: "通过本次练习，旨在帮助学习者将 CSS 基础语法、选择器、盒模型、浮动、定位、Flexbox、响应式设计等知识点融会贯通，提升运用 CSS 进行页面布局与样式美化的实战能力。同时，培养学习者对 UI 设计稿的还原能力，使其能够按照设计要求精准实现页面效果，为后续从事前端开发工作奠定坚实的基础。",
+                                 link: "需求文档/学成在线需求文档.html",
+                                 route: "需求文档/css学习路线.html"
+                             },
+                            // 阶段4：JS学习
+                             {
+                                 direction: "timeline-right",
+                                 date: "阶段 4: JS（10天）",
+                                 title: "JS学习",
+                                 image: "image//JS基础综合练习.png",
+                                 description: "本案例是学完 JavaScript 基础（变量、函数、DOM 操作、事件处理）、ES6。通过制作该案例，旨在帮助学习者打通 JS 知识与实际开发的衔接，提升 DOM 元素动态操作、页面交互逻辑实现、异步数据处理及电商核心功能开发的实战能力，同时培养代码模块化、逻辑结构化的编程思维，为后续从事前端开发（尤其是电商方向）积累项目经验。",
+                                 link: "需求文档/小兔鲜儿需求文档.html",
+                                 index: 3,
+                                 route: "需求文档/JS学习路线.html"
+                                
+                             },
+                            // 阶段5：Vue学习
+                            {
+                                direction: "timeline-left",
+                                date: "阶段 5: vue框架（1-2个月）",
+                                title: "Vue学习",
+                                image: "image//Vue学习.jpg",
+                                description: "Vue 是用于构建用户界面的渐进式JavaScript 框架。Vue 基础面试题的考察重点包括 Vue 的双向数据绑定、模板语法Vue 实例与生命周期钩子、组件之间的通信(props 和 $emit)、条件与循环渲染、事件处理、计算属性与侦听器的使用、以及Vue 的指令系统。",
+                                link: "需求文档/Vue.html",
+                                route: "需求文档/Vue学习路线.html"
+                            },
+                            // 阶段6：react学习
+                            {
+                                direction: "timeline-right",
+                                date: "阶段 6: react框架（1-2个月）",
+                                title: "react学习",
+                                image: "image//react学习.jpg",
+                                description: "React 是流行的前端库，用于构建交互式用户界面。React 基础面试题的考察重点包括组件的概念、JSX语法、props 和 state 的区别与管理、生命周期方法、事件处理、表单数据绑定、React 中的条件渲染与列表渲染、以及虚拟 DOM 的工作原理。",
+                                link: "需求文档/React.html",
+                                route: "需求文档/React学习路线.html"
+                            },
+                            // 阶段7：Ajax
+                            {
+                                direction: "timeline-left",
+                                date: "阶段 7: Ajax学习（1-2个月）",
+                                title: "Ajax学习",
+                                image: "image/敬请期待.jpg",
+                                description: "核心技术：基于 JavaScript 的XMLHttpRequest对象（或现代Fetch API），结合 HTML/CSS 实现局部更新。核心特点：异步通信（不阻塞页面操作）、局部刷新（无需重载整个页面），数据格式常用 JSON（替代早期 XML）。核心价值：提升交互流畅度，让网页更接近桌面应用体验。",
+                                link: "需求文档/Ajax.html",
+                                route: "需求文档/Ajax学习路线.html"
+                            }
+                        ]
+                    };
+                },
+                methods: {
+                    showImageModal(image, title) {
+                        this.modalImage = image;
+                        this.modalTitle = title;
+                        this.showModal = true;
+                    },
+                    closeModal() {
+                        this.showModal = false;
+                        this.modalImage = '';
+                        this.modalTitle = '';
+                    },
+                    openExternalLink(url) {
+                        window.open(url, '_blank');
+                    }
+                }
+            }).mount("#app"); // 3. 将实例挂载到 #app 容器
+        </script>
+</body>
+
+</html>

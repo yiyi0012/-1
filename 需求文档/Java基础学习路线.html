@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 基础学习路线</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">Java 基础学习路线</span>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    Java 基础学习路线
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    从环境入门到核心语法，循序渐进掌握 Java 基础。
+                </p>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <div id="roadmap" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:map-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        Java 学习路线
+                    </h2>
+                    <div class="text-gray-600 leading-relaxed whitespace-pre-line">
+                        Java 基础学习路线
+    
+                        一、环境入门（1 - 2 周）
+                        1. 搭环境：装 JDK 11/17，配 JAVA_HOME 和 Path，用 java -version 验证。
+                        2. 选工具：先手写代码（Notepad++），再学 IDEA 基础操作（建项目、运行）。
+                        3. 写程序：编 Hello World，搞懂类结构、main 方法（程序入口）、System.out.println()（输出）。
+    
+                        二、核心语法（4 - 6 周）
+                        1. 基础语法（3 - 4 天）
+                         变量：掌握基本类型（int/double/boolean），会定义赋值（int a=10）。
+                         运算符：用算术（+/*/%）、逻辑（&&/||）、比较（>/==）写简单计算。
+                         注释：会单行（//）、多行（/* */）注释。
+    
+                        2. 流程控制（5 - 7 天）
+                         分支：用 if - else（多条件判断）、switch（固定值匹配）处理逻辑。
+                         循环：用 for（已知次数，如遍历 1 - 100）、while/do - while（未知次数，如键盘输入）。
+    
+                        3. 数组（3 - 4 天）
+                         一维数组：会定义（int[] arr={1,2,3}）、遍历（普通 / 增强 for 循环）。
+                         二维数组：理解嵌套结构（int[ ][ ] arr={{1,2},{3,4}}），会双层遍历。
+                         操作：练求最值、冒泡排序、元素查找。
+    
+                        4. 面向对象基础（1 周）
+                         类与对象：懂 “类是模板，对象是实例”，会定义成员变量（name）、成员方法（study()），调用对象方法。
+                         构造方法：会写无参 / 有参构造，用 this 区分成员与局部变量。
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>

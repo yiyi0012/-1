@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生管理系统需求文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index2.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- 引入 Vue 3 依赖 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+            <nav class="main-container px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="icon-button">
+                        <img src="../image/logo.png" alt="logo" class="w-12 h-12">
+                    </button>
+                    <span class="ml-2 text-xl font-bold text-tech-blue">{{ siteName }}</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a v-for="(item, index) in navLinks" :key="index" :href="item.href"
+                        class="text-gray-700 hover:text-tech-accent font-medium transition-colors">
+                        {{ item.label }}
+                    </a>
+                </div>
+
+                <div class="md:flex items-center space-x-4">
+                    <button
+                        class="bg-white text-tech-blue font-medium px-4 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors text-sm md:px-6 md:py-2">
+                        登录
+                    </button>
+                    <button
+                        class="bg-tech-blue text-white font-medium px-4 py-2 rounded-lg hover:bg-tech-accent transition-colors text-sm md:px-6 md:py-2">
+                        注册
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主视觉区域 -->
+        <section class="hero-section pt-32 pb-24 text-white">
+            <div class="main-container px-8 flex flex-col items-center text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 max-w-4xl">
+                    {{ heroTitle }}
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 max-w-4xl">
+                    {{ heroDesc }}
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:calendar" class="mr-2"></iconify-icon>
+                        开发周期：10天
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:code-braces" class="mr-2"></iconify-icon>
+                        技术：CSS基础知识
+                    </span>
+                    <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">
+                        <iconify-icon icon="mdi:target" class="mr-2"></iconify-icon>
+                        难度等级：入门级
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 需求文档主体 -->
+        <section class="py-16 bg-gray-50">
+            <div class="main-container px-8">
+                <!-- 项目概述 -->
+                <div id="overview" class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                        <iconify-icon icon="mdi:information-outline" class="mr-3 text-tech-blue"></iconify-icon>
+                        项目概述
+                    </h2>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">项目背景</h3>
+                        <p class="text-gray-600 mb-6">{{ projectOverview.background }}</p>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">项目目标</h3>
+                        <div class="text-gray-600 leading-relaxed whitespace-pre-line">{{ projectOverview.goalsText }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+            createApp({
+                data() {
+                    return {
+                        siteName: "智慧应用工作室",
+                        navLinks: [
+                            { href: "../初稿.html", label: "首页" },
+                            { href: "../后端第一期展示.html", label: "学习计划" },
+                            { href: "#overview", label: "项目概述" },
+                            { href: "#requirements", label: "功能需求" }
+                        ],
+                        heroTitle: "学成在线需求文档",
+                         heroDesc: "在线学习平台完整页面设计与功能规范",
+                         projectOverview: {
+                             background: "学成在线是一个综合性的在线学习平台，提供丰富的课程资源和学习工具，帮助用户实现技术成长和职业发展。",
+                             goalsText: "一）功能需求​\n页面导航功能​\n顶部导航栏需包含平台 Logo、课程分类菜单、搜索框、登录 / 注册按钮。​\n课程分类菜单鼠标悬停时，需显示下拉子菜单，展示具体课程类别，如前端开发、后端开发、移动开发、UI 设计等。​\n搜索框支持输入关键词进行课程搜索，点击搜索按钮或按下回车键可触发搜索操作（本次练习仅需实现界面，无需实现搜索功能逻辑）。​\n登录 / 注册按钮点击时，需有明显的样式变化（如颜色、背景色改变），模拟交互效果。​\n轮播图展示功能​\n页面顶部需实现轮播图效果，展示平台热门课程、优惠活动、学习成果等内容。​\n轮播图需包含左右切换按钮，点击可切换至前一张或后一张图片。​\n轮播图底部需设置指示器，指示器数量与轮播图片数量一致，点击对应指示器可直接切换至该图片。​\n轮播图需支持自动播放功能，每隔 5 秒自动切换一张图片，鼠标悬停在轮播图上时，自动播放暂停，鼠标离开后继续自动播放。​\n课程展示功能​\n页面中部需设置课程展示区域，展示多门热门课程，每门课程需包含课程图片、课程名称、课程讲师、课程价格、课程评分等信息。​\n课程展示区域需采用网格布局，每行展示 4 门课程，课程卡片之间需保留适当的间距。​\n鼠标悬停在课程卡片上时，需有阴影效果和轻微的缩放动画，提升用户交互体验。​\n学习路径功能​\n页面需设置学习路径展示区域，展示不同技术方向的学习路径，如前端开发学习路径、后端开发学习路径等。​\n每个学习路径需包含路径名称、路径简介、学习阶段（如入门阶段、进阶阶段、高级阶段）、阶段课程列表等信息。​\n学习路径区域需采用横向布局，支持左右滑动查看更多学习路径（本次练习仅需实现界面布局，无需实现滑动功能逻辑）。​\n讲师介绍功能​\n页面需设置讲师介绍区域，展示平台优秀讲师信息，每位讲师需包含讲师照片、讲师姓名、讲师头衔、讲师简介、擅长课程等信息。​\n讲师介绍区域需采用网格布局，每行展示 3 位讲师，讲师卡片之间需保留适当的间距。​\n鼠标悬停在讲师卡片上时，需显示讲师的详细介绍信息（可采用弹窗或卡片展开的形式）。​\n用户反馈功能​\n页面底部需设置用户反馈区域，包含反馈表单，用户可输入姓名、联系方式、反馈内容等信息。​\n反馈表单需包含提交按钮，点击提交按钮时，需有表单验证效果（如判断姓名、联系方式、反馈内容是否为空，联系方式格式是否正确等，本次练习仅需实现界面和简单的样式验证，无需实现后端验证逻辑）。​\n反馈表单提交后，需显示提交成功的提示信息（如弹窗或文本提示）。​\n（二）界面需求​\n整体风格​\n界面风格需简洁、专业、清晰，符合教育类网站的定位，主色调采用蓝色（#1E90FF）和白色，辅助色采用橙色（#FF7F50），用于突出重点内容（如按钮、价格、评分等）。​\n页面字体需统一，正文采用微软雅黑或 Arial 字体，字体大小为 14px，标题字体大小根据层级依次递增（如一级标题 24px、二级标题 20px、三级标题 16px）。​\n页面各板块之间需设置明显的分隔线或间距，保证界面的层次感和可读性。​\n响应式设计​\n页面需支持响应式设计，适配不同屏幕尺寸，包括电脑端（屏幕宽度≥1200px）、平板端（768px≤屏幕宽度＜1200px）、手机端（屏幕宽度＜768px）。​\n电脑端：按照正常设计稿实现页面布局，展示完整的功能模块和内容。​\n平板端：调整课程展示区域和讲师介绍区域的布局，每行展示课程数量调整为 2-3 门，讲师数量调整为 2 位；隐藏部分非核心内容（如学习路径区域的部分详细信息），通过折叠或弹窗的形式展示。​\n手机端：顶部导航栏改为汉堡菜单形式，点击汉堡菜单可展开导航菜单；课程展示区域和讲师介绍区域每行展示 1 门课程或 1 位讲师；轮播图指示器改为小圆点形式，隐藏左右切换按钮（可通过滑动屏幕切换轮播图）；简化用户反馈表单，只保留核心输入项（如反馈内容、联系方式）。​\n细节要求​\n页面所有图片需保证清晰，无拉伸、变形等情况，图片加载失败时需显示默认占位图。​\n页面按钮、输入框、下拉菜单等交互元素需有统一的样式，如按钮默认状态、悬停状态、点击状态的颜色、背景色、边框样式等需保持一致。​\n页面文字需保证清晰可读，文字颜色与背景色之间需有足够的对比度（符合 WCAG 对比度标准，正常文本对比度不低于 4.5:1，大文本对比度不低于 3:1）。​\n页面各元素的对齐方式需统一，如文本左对齐、图片居中对齐、按钮居中对齐等，保证界面的整洁性。​\n（三）技术需求​\nCSS 技术要求​\n需熟练运用 CSS 选择器（如元素选择器、类选择器、ID 选择器、后代选择器、相邻兄弟选择器等）进行样式设置。​\n需合理运用 CSS 盒模型（content、padding、border、margin）进行元素布局，避免出现布局混乱的情况。​\n需根据页面布局需求，灵活运用 CSS 浮动（float）、定位（position）、Flexbox 布局、Grid 布局等技术，实现复杂的页面结构。​\n需运用 CSS 动画（animation）和过渡（transition）效果，为页面元素添加交互动画，如轮播图切换动画、课程卡片悬停动画、按钮点击动画等。​\n需运用 CSS 媒体查询（media query）实现响应式设计，适配不同屏幕尺寸的设备。​\n需合理组织 CSS 代码，可采用 CSS 模块化、CSS 预处理器（如 Sass、Less）的思想（本次练习可不使用预处理器，仅需保证代码的可读性和可维护性），避免出现重复代码和冗余代码。​\n兼容性要求​\n页面需兼容主流的浏览器，包括 Chrome（谷歌浏览器）、Firefox（火狐浏览器）、Safari（苹果浏览器）、Edge（微软 Edge 浏览器）等，确保在不同浏览器中页面样式和功能正常显示。​\n对于一些浏览器特有的 CSS 属性，需添加相应的浏览器前缀（如 - webkit-、-moz-、-o-、-ms-），保证属性在不同浏览器中能够正常生效。​\n性能要求​\n页面加载速度需较快，CSS 代码需简洁高效，避免出现大量复杂的 CSS 选择器和样式规则，影响页面渲染速度。​\n页面图片需进行优化，可采用适当的图片格式（如 JPEG、PNG、WebP 等）和压缩方式，减少图片文件大小，提升页面加载速度。​\n避免在 CSS 中使用过多的 @import 规则，因为 @import 规则会导致浏览器额外发送请求，增加页面加载时间，建议采用 link 标签引入 CSS 文件。",
+                         },
+                    };
+                }
+            }).mount("#app");
+        </script>
+</body>
+
+</html>

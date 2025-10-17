@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧应用工作室</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tech-blue': '#1e3a8a',
+                        'tech-light': '#3b82f6',
+                        'tech-accent': '#f97316',
+                        'success': '#10b981',
+                        'warning': '#ef4444',
+                    },
+                },
+                fontFamily: {
+                    'display': ['Inter', 'sans-serif'],
+                    'body': ['Roboto', 'sans-serif']
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="fixed w-full top-0 z-50 nav-glass shadow-md py-4">
+        <nav class="main-container px-8 flex justify-between items-center">
+            <div class="flex items-center">
+                <icon-button class="icon-button">
+                    <!-- <iconify-icon icon="mdi:brain" width="40" height="40" style="color: #1e3a8a;"></iconify-icon> -->
+                     <img src="image/logo.png" alt="logo" class="w-12 h-12">
+                </icon-button>
+                <span class="ml-2 text-xl font-display font-bold text-tech-blue">智慧应用工作室</span>
+            </div>
+
+            <div class="flex space-x-8">
+                <a href="#" class="text-gray-700 hover:text-tech-accent font-medium transition-colors">首页</a>
+                <a href="#learning-pathways"
+                    class="text-gray-700 hover:text-tech-accent font-medium transition-colors">学习路线</a>
+                <!-- <a href="#learning-content"
+                    class="text-gray-700 hover:text-tech-accent font-medium transition-colors">学习内容</a> -->
+                <!-- <a href="#achievements"
+                    class="text-gray-700 hover:text-tech-accent font-medium transition-colors">学习成果</a> -->
+                <a href="#teachers" class="text-gray-700 hover:text-tech-accent font-medium transition-colors">教师资源</a>
+                <!-- <a href="#help-center"
+                    class="text-gray-700 hover:text-tech-accent font-medium transition-colors">帮助中心</a> -->
+            </div>
+
+            <div style="visibility: hidden;">
+                <button
+                    class="bg-white text-tech-blue font-medium px-6 py-2 rounded-lg border border-tech-blue hover:bg-tech-light hover:text-white transition-colors">登录</button>
+                <button
+                    class="bg-tech-blue text-white font-medium px-6 py-2 rounded-lg ml-4 hover:bg-tech-accent transition-colors">注册</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 主视觉区域 -->
+    <section class="hero-section pt-28 pb-24 text-white">
+        <div class="main-container px-8 flex flex-col items-center text-center">        
+            <h1 class="text-5xl font-display font-bold mb-6 max-w-2xl">
+                智慧应用智造无限可能
+            </h1>
+            <p class="text-xl opacity-90 mb-8 max-w-3xl">
+                智慧应用工作室欢迎你们
+            </p>
+            <div class="flex space-x-4 mt-4" style="visibility: hidden;">
+                <button
+                    class="bg-tech-accent hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors shadow-lg">
+                    探索内容
+                </button>
+                <button
+                    class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors border border-white border-opacity-30">
+                    联系我们
+                </button>
+            </div>
+        </div>
+    </section>
+    
+<!-- 学习路线模块 -->
+<section id="learning-pathways" class="py-16 bg-gray-50">
+    <div class="main-container px-8">
+        <h2 class="text-3xl font-display font-bold text-center text-gray-800 mb-12">学习路线图</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="app">
+            <!-- 使用 v-for 循环渲染学习路线卡片 -->
+            <div :href="path.link" class="block" style="text-decoration: none;" v-for="path in learningPaths" :key="path.id">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover transition-transform card">
+                    <p class="text-gray-600 mb-4">{{ path.description }}</p>
+                    <a class="text-tech-light hover:text-tech-accent font-medium" :href="path.link">查看路线 →</a>
+                    <div class="image-container overflow-hidden photo">
+                        <img :id="path.id" :src="path.imageSrc" :alt="path.imageAlt"
+                            class="w-full h-48 object-cover image-scale">
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{ path.title }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- 学习成果模块 -->
+    <section id="achievements" class="py-16 bg-gray-50" style="display: none;">
+        <div class="main-container px-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-display font-bold text-gray-800">学员作品展示</h2>
+                <a href="#" class="text-tech-light hover:text-tech-accent font-medium">查看全部项目 →</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 项目卡片1 -->
+                <div class="image-container overflow-hidden rounded-xl relative group">
+                    <img id="8" src="https://modao.cc/ai/uploads/ai_pics/30/309785/aigp_1758716616.jpeg"
+                        alt="Task management web application user interface design"
+                        class="w-full h-64 object-cover image-scale">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div>
+                            <h3 class="text-white font-bold text-xl">任务管理系统</h3>
+                            <div class="flex mt-2">
+                                <span
+                                    class="bg-tech-accent bg-opacity-80 text-white px-2 py-1 rounded text-sm">前端开发</span>
+                                <span
+                                    class="bg-tech-light bg-opacity-80 text-white px-2 py-1 rounded text-sm ml-2">Vue.js</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目卡片2 -->
+                <div class="image-container overflow-hidden rounded-xl relative group">
+                    <img id="9" src="https://modao.cc/ai/uploads/ai_pics/30/309786/aigp_1758716619.jpeg"
+                        alt="Healthcare mobile app with medical records visualization"
+                        class="w-full h-64 object-cover image-scale">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div>
+                            <h3 class="text-white font-bold text-xl">健康管理移动应用</h3>
+                            <div class="flex mt-2">
+                                <span
+                                    class="bg-tech-accent bg-opacity-80 text-white px-2 py-1 rounded text-sm">移动开发</span>
+                                <span
+                                    class="bg-success bg-opacity-80 text-white px-2 py-1 rounded text-sm ml-2">Flutter</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目卡片3 -->
+                <div class="image-container overflow-hidden rounded-xl relative group">
+                    <img id="10" src="https://modao.cc/ai/uploads/ai_pics/30/309787/aigp_1758716621.jpeg"
+                        alt="E-commerce analytics dashboard displaying sales metrics"
+                        class="w-full h-64 object-cover image-scale">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div>
+                            <h3 class="text-white font-bold text-xl">电商数据仪表盘</h3>
+                            <div class="flex mt-2">
+                                <span class="bg-success bg-opacity-80 text-white px-2 py-1 rounded text-sm">数据可视化</span>
+                                <span
+                                    class="bg-tech-light bg-opacity-80 text-white px-2 py-1 rounded text-sm ml-2">React</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 教师资源模块 -->
+    <section id="teachers" class="py-16">
+        <div class="main-container px-8">
+            <h2 class="text-3xl font-display font-bold text-center text-gray-800 mb-12">指导教师团队</h2>
+            <div id="teachers-app">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- 使用 Vue v-for 渲染教师卡片 -->
+                    <div v-for="teacher in teachers" :key="teacher.id"
+                        class="teacher-card bg-white rounded-2xl shadow-lg overflow-hidden p-8 flex flex-col items-center">
+                        <div class="teacher-circle overflow-hidden border-4 border-white rounded-full shadow-lg mb-6">
+                            <img :id="teacher.id" :src="teacher.imageSrc" :alt="teacher.imageAlt"
+                                class="teacher-avatar w-32 h-32 object-cover">
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">{{ teacher.name }}</h3>
+                        <div class="text-tech-accent font-medium mb-4">{{ teacher.title }}</div>
+                        <p class="text-gray-600 text-center">{{ teacher.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 帮助中心模块 -->
+    <section id="help-center" class="py-16 bg-gray-50" style="display: none;">
+        <div class="main-container px-8 flex flex-col lg:flex-row gap-10">
+            <div class="lg:w-1/2">
+                <h2 class="text-3xl font-display font-bold text-gray-800 mb-8">常见问题解答</h2>
+
+                <div class="space-y-4">
+                    <!-- FAQ 1 -->
+                    <div class="accordion bg-white rounded-xl shadow-sm overflow-hidden">
+                        <button
+                            class="accordion-toggle w-full text-left px-6 py-4 flex justify-between items-center hover:bg-gray-50">
+                            <span class="font-medium text-gray-800">如何注册工作室会员？</span>
+                            <iconify-icon icon="mdi:chevron-down" class="accordion-icon text-gray-400"></iconify-icon>
+                        </button>
+                        <div class="accordion-content px-6 pb-4 pt-0">
+                            <p class="text-gray-600">访问网站首页顶部的"注册"按钮，填写基本信息并通过邮箱验证即可完成注册流程。新注册会员可获得7天免费试用期。</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="accordion bg-white rounded-xl shadow-sm overflow-hidden">
+                        <button
+                            class="accordion-toggle w-full text-left px-6 py-4 flex justify-between items-center hover:bg-gray-50">
+                            <span class="font-medium text-gray-800">项目资源如何访问？</span>
+                            <iconify-icon icon="mdi:chevron-down" class="accordion-icon text-gray-400"></iconify-icon>
+                        </button>
+                        <div class="accordion-content px-6 pb-4 pt-0">
+                            <p class="text-gray-600">登录账号后，进入"学习内容"模块，所有项目资源按分类展示。标准会员可访问基础资源，高级会员可解锁全部项目源码。</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="accordion bg-white rounded-xl shadow-sm overflow-hidden">
+                        <button
+                            class="accordion-toggle w-full text-left px-6 py-4 flex justify-between items-center hover:bg-gray-50">
+                            <span class="font-medium text-gray-800">可以与导师直接沟通吗？</span>
+                            <iconify-icon icon="mdi:chevron-down" class="accordion-icon text-gray-400"></iconify-icon>
+                        </button>
+                        <div class="accordion-content px-6 pb-4 pt-0">
+                            <p class="text-gray-600">高级会员可选择导师一对一指导服务，每月提供4次实时交流机会。标准会员可通过论坛发帖与导师进行沟通。</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div class="accordion bg-white rounded-xl shadow-sm overflow-hidden">
+                        <button
+                            class="accordion-toggle w-full text-left px-6 py-4 flex justify-between items-center hover:bg-gray-50">
+                            <span class="font-medium text-gray-800">项目是否授予证书？</span>
+                            <iconify-icon icon="mdi:chevron-down" class="accordion-icon text-gray-400"></iconify-icon>
+                        </button>
+                        <div class="accordion-content px-6 pb-4 pt-0">
+                            <p class="text-gray-600">完成指定项目路径并通过最终评估后，将获得工作室颁发的技术能力认证证书，证明您掌握的专业技能。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2">
+                <h2 class="text-3xl font-display font-bold text-gray-800 mb-8">联系我们</h2>
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <form class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+                            <input type="text" id="name"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-tech-light focus:border-tech-light">
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">电子邮箱</label>
+                            <input type="email" id="email"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-tech-light focus:border-tech-light">
+                        </div>
+
+                        <div>
+                            <label for="topic" class="block text-sm font-medium text-gray-700 mb-1">咨询主题</label>
+                            <select id="topic"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-tech-light focus:border-tech-light">
+                                <option>课程咨询</option>
+                                <option>技术支持</option>
+                                <option>会员服务</option>
+                                <option>项目合作</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">详细内容</label>
+                            <textarea id="message" rows="5"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-tech-light focus:border-tech-light"></textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-tech-light hover:bg-tech-blue text-white font-bold py-3 px-4 rounded-lg transition-colors">发送消息</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚区域 -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="main-container px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <!-- <iconify-icon icon="mdi:brain" width="36" height="36" class="text-tech-light"></iconify-icon> -->
+                         <img src="image/logo.png" alt="logo" class="w-12 h-12">
+                        <span class="ml-2 text-2xl font-display font-bold">智慧应用工作室</span>
+                    </div>
+                    <p class="text-gray-300 max-w-md">
+                        致力于提供优质技术教育资源，培养下一代创新开发者。
+                        我们的使命是让技术学习更加高效、实用、有趣。
+                    </p>
+                </div>
+
+                <div style="visibility: hidden;">
+                    <h4 class="font-bold text-lg mb-4">快速链接</h4>
+                    <ul class="space-y-2 footer-links">
+                        <li><a href="#learning-pathways"
+                                class="text-gray-300 hover:text-white transition-colors">学习路线</a></li>
+                        <li><a href="#learning-content"
+                                class="text-gray-300 hover:text-white transition-colors">学习资源</a></li>
+                        <li><a href="#teachers" class="text-gray-300 hover:text-white transition-colors">教师团队</a></li>
+                        <li><a href="#achievements" class="text-gray-300 hover:text-white transition-colors">项目展示</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg mb-4">关注我们</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><iconify-icon
+                                icon="mdi:wechat" width="24"></iconify-icon></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><iconify-icon
+                                icon="mdi:weibo" width="24"></iconify-icon></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><iconify-icon
+                                icon="mdi:github" width="24"></iconify-icon></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><iconify-icon
+                                icon="mdi:bilibili" width="24"></iconify-icon></a>
+                    </div>
+
+                    <h4 class="font-bold text-lg mb-2">联络信息</h4>
+                    <p class="text-gray-300">QQ:164490672</p>
+                    <!-- <p class="text-gray-300">(010) 8234-5678</p> -->
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-12 pt-6 text-center">
+                <p class="text-gray-400">© 2025 智慧应用工作室 版权所有。保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // 折叠面板交互逻辑（原有的代码保留）
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const accordion = button.closest('.accordion');
+            const content = accordion.querySelector('.accordion-content');
+            const icon = accordion.querySelector('.accordion-icon');
+
+            if (content.classList.contains('max-h-0')) {
+                accordion.classList.add('active');
+                content.classList.add('max-h-screen');
+                icon.setAttribute('icon', 'mdi:chevron-up');
+            } else {
+                accordion.classList.remove('active');
+                content.classList.remove('max-h-screen');
+                icon.setAttribute('icon', 'mdi:chevron-down');
+            }
+        });
+    });
+
+    // 定义 Vue 实例
+    new Vue({
+        el: '#app',
+        data: {
+            learningPaths: [
+                {
+                    id: 1,
+                    title: '前端开发',
+                    description: '掌握HTML/CSS/JS核心技术，框架实践与前端工程化',
+                    imageSrc: 'image/前端图片.jpg',
+                    imageAlt: 'Web development learning pathway with HTML, CSS, JavaScript frameworks',
+                    link: '前端第一期展示.html'
+                },
+                {
+                    id: 2,
+                    title: '后端架构',
+                    description: '服务器端开发、数据库设计与API集成方案',
+                    imageSrc: 'image/后端图片.jpg',
+                    imageAlt: 'Backend architecture showing server and database interactions',
+                    link: '后端第一期展示.html'
+                },
+                {
+                    id: 3,
+                    title: '移动应用',
+                    description: 'iOS与Android全栈开发，跨平台解决方案',
+                    imageSrc: 'image/敬请期待.jpg',
+                    imageAlt: 'Data science workflow with visualization and machine learning',
+                    // link: 'mobile-path.html'
+                },
+                {
+                    id: 4,
+                    title: '敬请期待',
+                    description: '',
+                    imageSrc: 'image/敬请期待.jpg',
+                    imageAlt: 'Data science workflow with visualization and machine learning',
+                    // link: 'data-science-path.html'
+                }
+            ]
+        }
+    });
+    // 新增 Vue 实例用于教师团队
+    new Vue({
+        el: '#teachers-app',
+        data: {
+            teachers: [
+                {
+                    id: 11,
+                    name: '杜峰云',
+                    title: '联络人',
+                    description: '襆型调试优化训縤',
+                    imageSrc: 'image/杜峰云.png',
+                    imageAlt: 'Computer science professor specializing in web technologies'
+                },
+                {
+                    id: 12,
+                    name: '程勇勇',
+                    title: '负责人',
+                    description: '高校教学资源平台开发',
+                    imageSrc: 'image/程勇勇.png',
+                    imageAlt: 'Senior data scientist working with machine learning systems'
+                },
+                {
+                    id: 13,
+                    name: '傅文君',
+                    title: '协同人',
+                    description: '软件开发',
+                    imageSrc: 'image/傅文君.png',
+                    imageAlt: 'Mobile development expert demonstrating iOS application design'
+                },
+                {
+                    id: 14,
+                    name: '刘燕江',
+                    title: '协同人',
+                    description: '教材汇编工作',
+                    imageSrc: 'image/刘燕江.png',
+                    imageAlt: 'Computer science professor specializing in web technologies'
+                },
+                
+            ]
+        }
+    });
+</script>
+
+</body>
+
+</html>
