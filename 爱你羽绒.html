@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专属表白</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.prod.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { overflow: hidden; background: #000; font-family: 'Arial', sans-serif; }
+        #app { width: 100vw; height: 100vh; position: relative; }
+        #particle-canvas { position: absolute; top: 0; left: 0; z-index: 1; }
+        .love-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+        }
+        .love-text {
+            font-size: 2.5rem;
+            color: #ff4d94;
+            margin-bottom: 1.5rem;
+            animation: heartbeat 1.5s infinite;
+            text-shadow: 0 0 10px #ff4d94, 0 0 20px #ff4d94;
+        }
+        .love-btn {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #ff4d94, #ff6b6b);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 77, 148, 0.8);
+            transition: all 0.3s ease;
+            z-index: 11;
+            position: relative;
+        }
+        .love-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 77, 148, 1);
+        }
+        .surprise {
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        .surprise.show { opacity: 1; }
+        .love-popup {
+            position: absolute;
+            font-size: 1.2rem; /* 缩小字体，容纳更多弹窗 */
+            color: #ff4d94;
+            text-shadow: 0 0 8px #ff4d94;
+            opacity: 0;
+            animation: popup 1.8s ease-out forwards; /* 延长动画时长，避免过快消失 */
+            pointer-events: none;
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+        @keyframes popup {
+            0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+            30% { opacity: 1; transform: translateY(0) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-80px) scale(0.9); } /* 上飘距离增加，分布更均匀 */
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <canvas id="particle-canvas"></canvas>
+        <div id="popup-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;"></div>
+        <div class="love-container">
+            <h1 class="love-text">洪玉榕我喜欢你</h1>
+            <button class="love-btn" @click="triggerLove">点击解锁心意</button>
+            <div class="surprise" :class="{ show: isShowSurprise }">
+                羽绒很开心能认识你，与你相处的每一秒都是特殊的<br>
+                你懂我犹如我的知音，我很幸运能遇见你<br>
+                往后余生，风雪是你，平淡是你<br>
+                清贫是你，荣华是你<br>
+                心底温柔是你，目光所至也是你
+                <br>你愿意做我女朋友嘛</br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    isShowSurprise: false,
+                    particles: []
+                };
+            },
+            mounted() {
+                this.initParticles();
+            },
+            methods: {
+                triggerLove() {
+                    this.isShowSurprise = true;
+                    this.createLovePopups(5000); // 弹窗数量改为100个
+                    setTimeout(() => {
+                        popup.remove();
+                    }, 100000); // 弹窗持续时间延长至5000ms
+                    console.log('点击成功，满屏心意生成中～');
+                },
+                createLovePopups(count) {
+                    const container = document.getElementById('popup-container');
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+                    
+                    container.innerHTML = ''; // 清空旧弹窗
+                    
+                    for (let i = 0; i < count; i++) {
+                        // 扩大随机范围，让弹窗布满整个屏幕
+                        const x = Math.random() * (width - 100) + 10;
+                        const y = Math.random() * (height - 100) + 10;
+                        
+                        const popup = document.createElement('div');
+                        popup.className = 'love-popup';
+                        popup.textContent = '洪玉榕我喜欢你';
+                        popup.style.left = `${x}px`;
+                        popup.style.top = `${y}px`;
+                        popup.style.animationDelay = `${i * 0.01}s`; // 缩短间隔，弹窗密集出现
+                        
+                        container.appendChild(popup);
+                        
+                        setTimeout(() => {
+                            popup.remove();
+                        }, 80000); // 弹窗持续时间延长至8000ms
+                    }
+                },
+                initParticles() {
+                    const canvas = document.getElementById('particle-canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                    const particleCount = 120;
+
+                    for (let i = 0; i < particleCount; i++) {
+                        this.particles.push({
+                            x: Math.random() * canvas.width,
+                            y: Math.random() * canvas.height,
+                            size: Math.random() * 3 + 1,
+                            speedX: (Math.random() - 0.5) * 0.5,
+                            speedY: (Math.random() - 0.5) * 0.5,
+                            color: `rgba(255, 77, 148, ${Math.random() * 0.5 + 0.3})`
+                        });
+                    }
+
+                    const animate = () => {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        this.particles.forEach(particle => {
+                            particle.x += particle.speedX;
+                            particle.y += particle.speedY;
+
+                            if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
+                            if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+
+                            ctx.fillStyle = particle.color;
+                            ctx.beginPath();
+                            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            this.particles.forEach(other => {
+                                const dx = particle.x - other.x;
+                                const dy = particle.y - other.y;
+                                const distance = Math.sqrt(dx * dx + dy * dy);
+                                if (distance < 100) {
+                                    ctx.strokeStyle = `rgba(255, 77, 148, ${0.2 - distance / 500})`;
+                                    ctx.lineWidth = 0.5;
+                                    ctx.beginPath();
+                                    ctx.moveTo(particle.x, particle.y);
+                                    ctx.lineTo(other.x, other.y);
+                                    ctx.stroke();
+                                }
+                            });
+                        });
+                        requestAnimationFrame(animate);
+                    };
+                    animate();
+
+                    window.addEventListener('resize', () => {
+                        canvas.width = window.innerWidth;
+                        canvas.height = window.innerHeight;
+                    });
+                }
+            }
+        });
+        app.mount('#app');
+    </script>
+</body>
+</html>
